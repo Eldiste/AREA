@@ -1,0 +1,8 @@
+Doc
+build
+deployment
+migrations
+scripts
+src
+tests
+venv

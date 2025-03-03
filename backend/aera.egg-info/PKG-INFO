@@ -1,0 +1,31 @@
+Metadata-Version: 2.2
+Name: aera
+Version: 0.0.0
+Summary: AREA project for epitech
+Author-email: 1yam <lyam.gomes@epitech.eu>, Barthelemy <Barthelemy.villard@epitech.eu>, Mateo <mateo.lechantre@epitech.eu>, Dorian <dorian.senecot@epitech.eu>, Lucas <lucas.debize@epitech.eu>
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: <3.13.2,>=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.115.0
+Requires-Dist: asyncpg>=0.30.0
+Requires-Dist: psycopg2-binary>=2.9.0
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: pydantic>=2.10.0
+Requires-Dist: pydantic-settings>=2.6.1
+Requires-Dist: uvicorn>=0.32.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: alembic>=1.12.0
+Requires-Dist: redis[asyncio]
+Requires-Dist: aiohttp
+Requires-Dist: email-validator
+Requires-Dist: passlib
+Requires-Dist: python-jose>=3.3.0
+Requires-Dist: authlib>=1.3.0
+Requires-Dist: python-multipart>=0.0.5
+Requires-Dist: pycryptodome>=3.10.1
+Requires-Dist: itsdangerous>=2.0.0
+Requires-Dist: httpx>=0.25.0
+Requires-Dist: websockets>=10.0
+Requires-Dist: bcrypt>=4.0.0

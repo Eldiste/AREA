@@ -1,0 +1,73 @@
+import logging
+from typing import Optional
+
+from pydantic import Field
+
+from src.service.Action.actions import Action, ActionConfig, ActionResponse
+
+LOGGER = logging.getLogger(__name__)
+
+
+class ChannelUpdatedActionConfig(ActionConfig):
+    """
+    Configuration schema for the ChannelUpdatedAction.
+    """
+
+    channel_id: str = Field(
+        ..., description="The ID of the guild where the channel is updated."
+    )
+    channel_name: str = Field(
+        ..., description="The ID of the guild where the channel is updated."
+    )
+    content: str = Field(
+        None, description="Additional content about the channel deletion."
+    )
+
+
+class ChannelUpdatedActionResponse(ActionResponse):
+    """
+    Response schema for the ChannelUpdatedAction.
+    """
+
+    channel_id: str
+    content: str
+
+
+class ChannelUpdatedAction(Action):
+    name = "channel_updated"
+    config = ChannelUpdatedActionConfig
+
+    def __init__(self, config: ChannelUpdatedActionConfig):
+        """
+        Initialize the action with channel update details.
+
+        :param config: ChannelUpdatedActionConfig containing the updated attributes, channel ID, and guild ID.
+        """
+        super().__init__(config)
+
+    async def execute(self, *args, **kwargs) -> Optional[ChannelUpdatedActionResponse]:
+        """
+        Process the channel update details and log the event.
+
+        :return: A ChannelUpdatedActionResponse with the updated channel details.
+        """
+        try:
+            # Log the channel update
+            LOGGER.info(
+                f"Channel {self.config.channel_id} in guild {self.config.guild_id} "
+            )
+
+            # Return a successful response
+            return ChannelUpdatedActionResponse(
+                success=True,
+                details={
+                    "event": "channel_updated",
+                    "guild_id": self.config.guild_id,
+                },
+                channel_id=self.config.channel_id,
+                content=self.config.content,
+            )
+
+        except Exception as e:
+            LOGGER.error(f"Error processing channel update: {str(e)}")
+            return None

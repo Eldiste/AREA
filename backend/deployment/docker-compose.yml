@@ -1,0 +1,44 @@
+---
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports: [5432:5432]
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    networks: [area_network]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  server:
+    build:
+      context: ../
+      dockerfile: deployment/Dockerfile
+    ports: [8080:8080]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - POSTGRES__HOST=postgres
+      - POSTGRES__USER=${POSTGRES_USER}
+      - POSTGRES__PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES__DB=${POSTGRES_DB}
+      - DISCORD_REDIRECT_URI={OAUTH__PROVIDERS__DISCORD__REDIRECT_URI}
+    networks: [area_network]
+  redis:
+    restart: always
+    image: redis:7.0.10
+    ports: [127.0.0.1:6380:6379]
+    command: [redis-server, --requirepass, '${REDIS_PASSWORD}']
+    networks: [area_network]
+networks:
+  area_network:
+    driver: bridge
+volumes:
+  postgres_data:

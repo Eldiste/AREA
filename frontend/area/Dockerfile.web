@@ -1,0 +1,44 @@
+# Install Operating system and dependencies
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    unzip \
+    python3 \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}
+
+# Install Flutter
+RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
+ENV PATH="/usr/local/flutter/bin:${PATH}"
+
+# Enable Flutter web
+RUN flutter channel stable
+RUN flutter upgrade
+RUN flutter config --enable-web
+
+# Create app directory
+WORKDIR /app
+
+# Copy the Flutter project
+COPY . .
+
+# Get Flutter dependencies and build web
+RUN flutter pub get
+RUN flutter build web
+
+# Create necessary directories
+RUN mkdir -p /app/web/build
+
+# Copy the web build to the serving directory
+RUN cp -r build/web/* /app/web/build/
+
+EXPOSE 8081
+
+# Make server startup script executable
+COPY server/server.sh /app/server/server.sh
+RUN chmod +x /app/server/server.sh
+
+ENTRYPOINT ["/app/server/server.sh"]

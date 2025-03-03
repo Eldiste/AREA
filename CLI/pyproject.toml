@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aera-cli"
+description = "CLI for AREA project"
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+authors = [
+    { name = "1yam", email = "lyam.gomes@epitech.eu" }
+]
+requires-python = ">=3.12,<3.13.2"
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "shellingham>=1.5.0",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.6.1",
+    "aiohttp"
+]
+
+version = "0.1.0"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = 3.12
+strict = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_no_return = true
+
+[tool.black]
+line-length = 88
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--strict-markers -v"
+testpaths = ["tests"]
+
+[project.scripts]
+area = "src.main:app"

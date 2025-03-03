@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- App Display Name -->
+    <key>CFBundleName</key>
+    <string>AREA</string>
+
+    <!-- App Bundle Identifier -->
+    <key>CFBundleIdentifier</key>
+    <string>com.example.area</string>
+
+    <!-- Minimum and Target iOS Versions -->
+    <key>MinimumOSVersion</key>
+    <string>12.0</string>
+
+    <!-- App Transport Security Settings -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>example.com</key>
+            <dict>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                <string>TLSv1.2</string>
+            </dict>
+        </dict>
+    </dict>
+
+    <!-- Permissions for Internet Access -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+
+    <!-- Permissions for Camera, Location, Notifications -->
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires access to the camera.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app requires access to your location to provide location-based services.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to your photo library to upload photos.</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This app uses tracking to improve your experience.</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>This app tracks your usage to improve performance.</string>
+
+    <!-- Deep Linking -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>com.example.area</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>area</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>com.example.area</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>https</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Privacy Settings -->
+    <key>NSPrivacy - NSActivityUsageDescription</key>
+    <string> This application needs .... </string>
+
+    <!-- Required for Flutter -->
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
+
+</dict>
+</plist>

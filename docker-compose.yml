@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports: 
+      - "5432:5432"
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - area_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: ./backend
+      dockerfile: deployment/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - POSTGRES__HOST=${POSTGRES_HOST}
+      - POSTGRES__USER=${POSTGRES_USER}
+      - POSTGRES__PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES__DB=${POSTGRES_DB}
+    networks:
+      - area_network
+
+  redis:
+    restart: always
+    image: redis:7.0.10
+    ports: [127.0.0.1:6380:6379]
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    networks:
+      - area_network
+
+  client_mobile:
+    build:
+      context: ./frontend/area
+      dockerfile: Dockerfile.mobile
+    volumes:
+      - build_volume:/app/build
+    networks:
+      - area_network
+
+  client_web:
+    build:
+      context: ./frontend/area
+      dockerfile: Dockerfile.web
+    ports:
+      - "8081:8081"
+    volumes:
+      - build_volume:/app/build
+    depends_on:
+      client_mobile:
+        condition: service_completed_successfully
+      server:
+        condition: service_started
+    networks:
+      - area_network
+
+volumes:
+  build_volume:
+  postgres_data:
+
+networks:
+  area_network:
+    driver: bridge 
